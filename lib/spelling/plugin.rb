@@ -34,8 +34,12 @@ module Danger
     # @return   [Array<String>]
     attr_accessor :ignored_files
 
-    # A method that you can call from your Dangerfile
-    # @return   [Array<String>]
+    #
+    # <Description>
+    #
+    # @param [<Type>] files <description>
+    #
+    # @return [<Type>] <description>
     #
     def check_spelling(files = nil)
       puts "--------BEGIN----------"
