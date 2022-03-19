@@ -1,0 +1,27 @@
+name: Branch Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  danger:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.6'
+
+      - name: Danger Report
+        run: |
+          # npm install -g orta/node-markdown-spellcheck
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+          bundle exec danger
+        timeout-minutes: 10
+        env:
+          DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
