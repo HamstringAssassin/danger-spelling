@@ -1,3 +1,4 @@
 rubocop.lint
 
-message "👍"
+# CHANGELOG CHECKS
+changelog.check!
