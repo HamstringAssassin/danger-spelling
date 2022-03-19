@@ -96,12 +96,16 @@ module Danger
     end
 
     #
-    # <Description>
     #
-    # @param [<Hash>] spell_issues <description>
-    # @param [<String>] current_slug <description>
+    # **Internal Method**
     #
-    # @return [Array<String>] <description>
+    # Updates the message that will eventually be posted as a comment a pull request with
+    # a new line for each time the spelling error has been detected.
+    #
+    # @param [<Hash>] spell_issues the Hash containing the file path & the detected mistakes.
+    # @param [<String>] current_slug the repo. eg /hamstringassassin/danger-spelling.
+    #
+    # @return [Array<String>] an array of messages to be displayed in the PR comment.
     #
     def update_message_for_issues(spell_issues, current_slug)
       message = "### Spell Checker found issues\n\n"
@@ -132,11 +136,14 @@ module Danger
     end
 
     #
-    # TODO
     #
-    # @param [<Type>] new_files <description>
+    # **Internal Method**
     #
-    # @return [<Type>] <description>
+    # Runs pyspelling on the test matrix name provided with any files given.
+    #
+    # @param [<Danger::FileList>] new_files a list of files provided to scan with pyspelling.
+    #
+    # @return [Hash] returns a hash of the file scanned and any spelling errors found.
     #
     def pyspelling_results(new_files)
       results_texts = {}
@@ -148,12 +155,15 @@ module Danger
     end
 
     #
-    # TODO
     #
-    # @param [<Type>] current_slug <description>
-    # @param [<Type>] path <description>
+    # **Internal Method**
     #
-    # @return [<Type>] <description>
+    # Check on the git service used. Will raise an error if using bitbucket as it currently doesnt support that.
+    #
+    # @param [<String>] current_slug the current repo slug. eg. hamstringassassin/danger-spelling.
+    # @param [<String>] path path to file.
+    #
+    # @return [<String>] full path to file including branch.
     #
     def git_check(current_slug, path)
       if defined? @dangerfile.github
@@ -161,14 +171,17 @@ module Danger
       elsif defined? @dangerfile.gitlab
         return "/#{current_slug}/tree/#{gitlab.branch_for_head}/#{path}"
       else
-        raise 'This plugin does not yet support bitbucket, would love PRs: https://github.com/hamstringassassin/danger-spelling/'
+        raise 'This plugin does not yet support bitbucket'
       end
     end
 
     #
-    # TODO
     #
-    # @return [<Type>] <description>
+    # **Internal Method**
+    #
+    # Check for dependencies. Raises exception if pyspelling, hunspell or aspell are not installed.
+    #
+    # @return [Void]
     #
     def check_for_dependancies
       raise 'pyspelling is not in the users PATH, or it failed to install.' unless pyspelling_installed?
@@ -177,12 +190,15 @@ module Danger
     end
 
     #
-    # TODO
     #
-    # @param [<String>] text <description>
-    # @param [<String>] file_path <description>
+    # **Internal Method**
     #
-    # @return [<Bool>] <description>
+    # Checks if a given line can be ignored if it contains expected pyspelling output.
+    #
+    # @param [<String>] text the text to check.
+    # @param [<String>] file_path the file path to check.
+    #
+    # @return [<Bool>] if the line can be ignored.
     #
     def ignore_line(text, file_path)
       text.strip == "Misspelled words:" ||
@@ -193,12 +209,16 @@ module Danger
     end
 
     #
-    # TODO
     #
-    # @param [<Array>] spelling_errors <description>
-    # @param [<String>] file_path <description>
+    # **Internal Method**
     #
-    # @return [<Array>] <description>
+    # Removes some standard words in the pyspelling results.
+    # Words provided in `ignored_words` will also be removed from the results array.
+    #
+    # @param [<Array>] spelling_errors Complete list of spelling errors.
+    # @param [<String>] file_path file path.
+    #
+    # @return [<Array>] curated list of spelling errors, excluding standard and user defined words.
     #
     def remove_ignored_words(spelling_errors, file_path)
       spelling_errors.delete("Misspelled words:")
@@ -212,47 +232,66 @@ module Danger
     end
 
     #
-    # TODO
     #
-    # @return [<Type>] <description>
+    # **Internal Method**
+    #
+    # Checks of pyspelling is installed.
+    #
+    # @return [<Bool>] 
     #
     def pyspelling_installed?
       'which pyspelling'.strip.empty? == false
     end
 
     #
-    # TODO
     #
-    # @return [<Type>] <description>
+    # **Internal Method**
+    #
+    # Checks if aspell is installed.
+    #
+    # @return [<Bool>]
     #
     def aspell_installed?
       'which aspell'.strip.empty? == false
     end
 
     #
-    # TODO
     #
-    # @return [<Type>] <description>
+    # **Internal Method**
+    #
+    # Checks if Hunspell is installed.
+    #
+    # @return [<Bool>] 
     #
     def hunspell_installed?
       'which hunspell'.strip.empty? == false
     end
 
     #
-    # TODO
     #
-    # @return [<Type>] <description>
+    # **Internal Method**
+    #
+    # checks if aspell and hunspell are installed.
+    #
+    # @return [<Bool>]
     #
     def aspell_hunspell_installed?
       aspell_installed? && hunspell_installed?
     end
 
     #
-    # TODO
     #
-    # @param [<Danger::FileList>] files <description>
+    # **Internal Method**
     #
-    # @return [<Danger::FileList>] <description>
+    # Gets a file list of the files provided or finds modified and added files to scan.
+    # If files are provided via `ignored_files` they will be removed from the final returned
+    # list.
+    # 
+    # Will raise an exception if no files are found. 
+    #
+    # @param [<Danger::FileList>] files FileList to scan. Can be nil.
+    #
+    # @return [<Danger::FileList>] a FileList of files found.
     #
     def get_files(files)
       # Use either the files provided, or the modified & added files.
