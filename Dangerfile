@@ -1,1 +1,1 @@
-spelling.check_spelling
+rubocop.lint
