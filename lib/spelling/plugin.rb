@@ -120,20 +120,42 @@ module Danger
         message << "| --- | ------ |\n "
 
         output_array = output.split(/\n/)
-
         output_array = remove_ignored_words(output_array, path)
 
         output_array.each do |txt|
-          unless ignore_line(txt, path)
-            File.foreach(path) { |path_line|
-              if path_line.strip.include?("#{txt.strip}")
-                message << "#{$.} | #{txt} \n "
+          File.open(path, 'r') do |file_handle|
+            file_handle.each_line do |path_line|
+              if find_word_in_text(path_line, txt)
+                message << "#{$INPUT_LINE_NUMBER} | #{txt} \n "
               end
-            }
+            end
           end
         end
       end
       markdown message
+    end
+
+    #
+    #
+    # **Internal Method**
+    #
+    # splits a line of text up and checks if the spelling error is a match.
+    #
+    # @param [<String>] text the string to be split and checked.
+    # @param [<String>] word the word to find in text.
+    #
+    # @return [<Bool>] if the word is found.
+    #
+    def find_word_in_text(text, word)
+      val = false
+      line_array = text.split
+      line_array.each do |array_item|
+        if array_item.strip == word.strip
+          val = true
+          val
+        end
+      end
+      val
     end
 
     #
@@ -223,8 +245,9 @@ module Danger
     #
     def remove_ignored_words(spelling_errors, file_path)
       spelling_errors.delete("Misspelled words:")
-      spelling_errors.delete("<text> #{file_path}")
+      spelling_errors.delete("<text> #{file_path}".strip)
       spelling_errors.delete('!!!Spelling check failed!!!')
+      spelling_errors.delete('--------------------------------------------------------------------------------')
       spelling_errors.delete('')
       ignored_words.each do |word|
         spelling_errors.delete(word)
