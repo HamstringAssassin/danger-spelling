@@ -32,8 +32,13 @@ GEM
       no_proxy_fix
       octokit (~> 4.7)
       terminal-table (>= 1, < 4)
+    danger-changelog (0.6.1)
+      danger-plugin-api (~> 1.0)
     danger-plugin-api (1.0.0)
       danger (> 2.0)
+    danger-rubocop (0.10.0)
+      danger
+      rubocop (~> 1.0)
     diff-lcs (1.5.0)
     faraday (1.10.0)
       faraday-em_http (~> 1.0)
@@ -156,6 +161,8 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 2.0)
+  danger-changelog (~> 0.6.0)
+  danger-rubocop
   danger-spelling!
   guard (~> 2.14)
   guard-rspec (~> 4.7)

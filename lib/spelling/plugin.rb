@@ -11,7 +11,8 @@ module Danger
   # * [hunspell](http://hunspell.github.io)
   #
   # Your repository will also require a .pyspelling.yml file to be present. This .pyspelling.yml can be basic,
-  # but it will require a name and source property.
+  # but it will require a name and source property. Its advisable to include `expect_match: false` in your test
+  # matrix. This will stop pyspelling from generating an error at runtime. 
   #
   # There are several ways to use this danger plugin
   #
@@ -73,7 +74,7 @@ module Danger
     # @param [<Danger::FileList>] files **Optional** files to be scanned. Default value is nil. If nil, added and
     # modified files will be scanned.
     #
-    # @return void
+    # @return [void]
     #
     def check_spelling(files = nil)
       if name.nil? || name.empty?
@@ -125,7 +126,7 @@ module Danger
         output_array.each do |txt|
           unless ignore_line(txt, path)
             File.foreach(path) { |path_line|
-              if path_line.strip.include?(" #{txt.strip}")
+              if path_line.strip.include?("#{txt.strip}")
                 message << "#{$.} | #{txt} \n "
               end
             }
