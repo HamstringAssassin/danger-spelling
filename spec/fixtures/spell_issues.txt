@@ -1,1 +1,5 @@
-{"spec/fixtures/test.yml"=>"Misspelled words:\n<text> test/test.yml\n--------------------------------------------------------------------------------\nAPIs\nAcitons\n--------------------------------------------------------------------------------\n\n!!!Spelling check failed!!!\n"}
+{"spec/fixtures/test.yml"=> \
+"Misspelled words:\n<text> test/test.yml\n--------------------------------------------------------------------------------\n
+APIs\n
+Acitons\n
+--------------------------------------------------------------------------------\n\n!!!Spelling check failed!!!\n"}
