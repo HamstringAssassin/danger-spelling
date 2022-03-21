@@ -1,3 +1,6 @@
+require 'english'
+require 'uri'
+
 module Danger
   # This is a Danger plugin that wraps the python library pyspelling and some of its usage.
   # The pyspelling results are posted to the pull request as a comment with the spelling mistake, file path &
@@ -109,11 +112,9 @@ module Danger
 
       spell_issues.each do |path, output|
         git_loc = git_check(current_slug, path)
-
-        message << "#### [#{path}](#{git_loc})\n\n"
-
-        message << "Line | Typo |\n "
-        message << "| --- | ------ |\n "
+        error_message = ''
+        error_message_updated = false
+        error_message = message_title(error_message, path, git_loc)
 
         output_array = output.split(/\n/)
         output_array = remove_ignored_words(output_array, path)
@@ -121,12 +122,39 @@ module Danger
         output_array.each do |txt|
           File.open(path, 'r') do |file_handle|
             file_handle.each_line do |path_line|
-              message << "#{$INPUT_LINE_NUMBER} | #{txt} \n " if find_word_in_text(path_line, txt)
+              if find_word_in_text(path_line, txt)
+                error_message << "#{$INPUT_LINE_NUMBER} | #{txt} \n "
+                error_message_updated = true
+              end
             end
           end
         end
+        if error_message_updated
+          message << error_message
+          error_message = ''
+        end
       end
       markdown message
+    end
+
+    #
+    #
+    # **Internal Method**
+    #
+    #
+    # appends the default message when a spelling error is found 
+    #
+    # @param [<String>] message the message to append
+    # @param [<String>] path the path of the file
+    # @param [<String>] git_loc the git location of the file
+    #
+    # @return [<String>] formatted message
+    #
+    def message_title(message, path, git_loc)
+      message << "#### [#{path}](#{git_loc})\n\n"
+      message << "Line | Typo |\n "
+      message << "| --- | ------ |\n "
+      message
     end
 
     #
@@ -145,12 +173,25 @@ module Danger
       line_array = text.split
       line_array.each do |array_item|
         array_item = array_item[0...array_item.size - 1] if array_item[-1] == '.'
-        if array_item.strip == word.strip
+        # puts "array_item #{array_item}"
+        # puts "is url #{is_url(array_item.strip)}"
+        if array_item.strip == word.strip && !is_url(array_item.strip)
           val = true
           val
         end
       end
       val
+    end
+
+    #
+    # checks if a given String is a URL
+    #
+    # @param [<String>] txt String to check
+    #
+    # @return [<Bool>]
+    #
+    def url?(txt)
+      txt =~ /\A#{URI.regexp}\z/
     end
 
     #
@@ -315,7 +356,6 @@ module Danger
     def get_files(files)
       # Use either the files provided, or the modified & added files.
       found_files = files ? Dir.glob(files) : (git.modified_files + git.added_files)
-      puts "found files...#{found_files.class}"
       raise 'No files found to check' if found_files.nil?
 
       ignored_files.each do |file|

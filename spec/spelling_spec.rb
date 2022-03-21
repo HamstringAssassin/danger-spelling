@@ -159,6 +159,31 @@ module Danger
         end
       end
 
+      describe 'when checking for URLs' do
+        it 'should detect a URL' do
+          expect(@spelling.url?('https://www.google.com')).to be_truthy
+        end
+
+        it 'should detect a URL' do
+          expect(@spelling.url?('https://google.com')).to be_truthy
+        end
+
+        it 'should detect a URL' do
+          expect(@spelling.url?('http://google.com')).to be_truthy
+        end
+
+        it 'should detect a URL' do
+          expect(@spelling.url?('https://google.com/test')).to be_truthy
+        end
+
+        it 'should detect a URL' do
+          expect(@spelling.url?('https://google.com/test?test=2')).to be_truthy
+        end
+
+        it 'should not detect a URL' do
+          expect(@spelling.url?('test@test.com')).to be_falsy
+        end
+      end
     end
   end
 end
