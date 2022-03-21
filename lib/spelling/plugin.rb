@@ -12,7 +12,7 @@ module Danger
   #
   # Your repository will also require a .pyspelling.yml file to be present. This .pyspelling.yml can be basic,
   # but it will require a name and source property. Its advisable to include `expect_match: false` in your test
-  # matrix. This will stop pyspelling from generating an error at runtime. 
+  # matrix. This will stop pyspelling from generating an error at runtime.
   #
   # There are several ways to use this danger plugin
   #
@@ -77,9 +77,7 @@ module Danger
     # @return [void]
     #
     def check_spelling(files = nil)
-      if name.nil? || name.empty?
-        raise 'name must be a valid matrix name in your .pyspelling.yml.'
-      end
+      raise 'name must be a valid matrix name in your .pyspelling.yml.' if name.nil? || name.empty?
 
       check_for_dependancies
 
@@ -91,9 +89,7 @@ module Danger
       # Get some metadata about the local setup
       current_slug = env.ci_source.repo_slug
 
-      if spell_issues.count.positive?
-        update_message_for_issues(spell_issues, current_slug)
-      end
+      update_message_for_issues(spell_issues, current_slug) if spell_issues.count.positive?
     end
 
     #
@@ -125,9 +121,7 @@ module Danger
         output_array.each do |txt|
           File.open(path, 'r') do |file_handle|
             file_handle.each_line do |path_line|
-              if find_word_in_text(path_line, txt)
-                message << "#{$INPUT_LINE_NUMBER} | #{txt} \n "
-              end
+              message << "#{$INPUT_LINE_NUMBER} | #{txt} \n " if find_word_in_text(path_line, txt)
             end
           end
         end
@@ -150,6 +144,7 @@ module Danger
       val = false
       line_array = text.split
       line_array.each do |array_item|
+        array_item = array_item[0...array_item.size - 1] if array_item[-1] == '.'
         if array_item.strip == word.strip
           val = true
           val
@@ -190,9 +185,9 @@ module Danger
     #
     def git_check(current_slug, path)
       if defined? @dangerfile.github
-        return "/#{current_slug}/tree/#{github.branch_for_head}/#{path}"
+        "/#{current_slug}/tree/#{github.branch_for_head}/#{path}"
       elsif defined? @dangerfile.gitlab
-        return "/#{current_slug}/tree/#{gitlab.branch_for_head}/#{path}"
+        "/#{current_slug}/tree/#{gitlab.branch_for_head}/#{path}"
       else
         raise 'This plugin does not yet support bitbucket'
       end
@@ -224,11 +219,11 @@ module Danger
     # @return [<Bool>] if the line can be ignored.
     #
     def ignore_line(text, file_path)
-      text.strip == "Misspelled words:" ||
-      text.strip == "<text> #{file_path}" ||
-      text.strip == '!!!Spelling check failed!!!' ||
-      text.strip == '--------------------------------------------------------------------------------' ||
-      text.strip == ''
+      text.strip == 'Misspelled words:' ||
+        text.strip == "<text> #{file_path}" ||
+        text.strip == '!!!Spelling check failed!!!' ||
+        text.strip == '--------------------------------------------------------------------------------' ||
+        text.strip == ''
     end
 
     #
@@ -244,7 +239,7 @@ module Danger
     # @return [<Array>] curated list of spelling errors, excluding standard and user defined words.
     #
     def remove_ignored_words(spelling_errors, file_path)
-      spelling_errors.delete("Misspelled words:")
+      spelling_errors.delete('Misspelled words:')
       spelling_errors.delete("<text> #{file_path}".strip)
       spelling_errors.delete('!!!Spelling check failed!!!')
       spelling_errors.delete('--------------------------------------------------------------------------------')
@@ -261,7 +256,7 @@ module Danger
     #
     # Checks of pyspelling is installed.
     #
-    # @return [<Bool>] 
+    # @return [<Bool>]
     #
     def pyspelling_installed?
       'which pyspelling'.strip.empty? == false
@@ -285,7 +280,7 @@ module Danger
     #
     # Checks if Hunspell is installed.
     #
-    # @return [<Bool>] 
+    # @return [<Bool>]
     #
     def hunspell_installed?
       'which hunspell'.strip.empty? == false
@@ -310,8 +305,8 @@ module Danger
     # Gets a file list of the files provided or finds modified and added files to scan.
     # If files are provided via `ignored_files` they will be removed from the final returned
     # list.
-    # 
-    # Will raise an exception if no files are found. 
+    #
+    # Will raise an exception if no files are found.
     #
     # @param [<Danger::FileList>] files FileList to scan. Can be nil.
     #
