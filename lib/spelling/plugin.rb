@@ -142,7 +142,7 @@ module Danger
     # **Internal Method**
     #
     #
-    # appends the default message when a spelling error is found 
+    # appends the default message when a spelling error is found.
     #
     # @param [<String>] message the message to append
     # @param [<String>] path the path of the file
@@ -175,7 +175,7 @@ module Danger
         array_item = array_item[0...array_item.size - 1] if array_item[-1] == '.'
         # puts "array_item #{array_item}"
         # puts "is url #{is_url(array_item.strip)}"
-        if array_item.strip == word.strip && !is_url(array_item.strip)
+        if array_item.strip == word.strip && !url?(array_item.strip)
           val = true
           val
         end
@@ -184,6 +184,9 @@ module Danger
     end
 
     #
+    #
+    # **Internal Method**
+    #
     # checks if a given String is a URL
     #
     # @param [<String>] txt String to check
@@ -191,7 +194,7 @@ module Danger
     # @return [<Bool>]
     #
     def url?(txt)
-      txt =~ /\A#{URI.regexp}\z/
+      txt =~ /\A#{URI::DEFAULT_PARSER.make_regexp}\z/
     end
 
     #
