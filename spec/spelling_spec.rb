@@ -144,6 +144,21 @@ module Danger
           expect(@spelling.update_message_for_issues(@spell_issues, 'HamstringAssassin/resume')).to eq(expected)
         end
       end
+
+      describe 'when detecting a word in a given sentence' do
+        it 'should ignore a spelling mistake if its part of a full word' do
+          expect(@spelling.find_word_in_text('email is al@test.io', 'io')).to be_falsy
+        end
+
+        it 'should detect a word when its on its own and not part of another word' do
+          expect(@spelling.find_word_in_text('email is al@test.io io', 'io')).to be_truthy
+        end
+
+        it 'should detect a word even at the end of a sentence' do
+          expect(@spelling.find_word_in_text('email is al@test.io io.', 'io')).to be_truthy
+        end
+      end
+
     end
   end
 end
