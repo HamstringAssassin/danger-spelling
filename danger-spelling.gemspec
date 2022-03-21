@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.version       = Spelling::VERSION
   spec.authors       = ["HammyAssassin"]
   spec.email         = ["alanoc83@gmail.com"]
-  spec.description   = "A short description of danger-spelling."
-  spec.summary       = "A longer description of danger-spelling."
+  spec.description   = "A Danger plugin for pyspelling."
+  spec.summary       = "danger-spelling uses pyspelling to scan files changed for spelling mistakes."
   spec.homepage      = "https://github.com/HammyAssassin/danger-spelling"
   spec.license       = "MIT"
 
