@@ -1,5 +1,5 @@
 # Danger Spelling
-
+[![main](https://github.com/HamstringAssassin/danger-spelling/actions/workflows/main.yml/badge.svg)](https://github.com/HamstringAssassin/danger-spelling/actions/workflows/main.yml)
 [![Twitter: @hammyassassin](https://img.shields.io/badge/contact-@hammyassassin-blue.svg?style=flat)](https://twitter.com/hammyassassin)
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/HamstringAssassin/danger-spelling/blob/main/LICENSE.txt)
 [![Gem](https://img.shields.io/gem/v/danger-spelling.svg?style=flat)](https://rubygems.org/gems/danger-spelling)
