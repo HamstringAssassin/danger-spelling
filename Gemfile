@@ -8,3 +8,13 @@ gemspec
 # Danger plugins to run as part of CI
 gem 'danger-changelog', '~> 0.6.0'
 gem 'danger-rubocop'
+gem 'undercover'
+gem 'danger-undercover'
+
+# Gemfile
+group :test do
+  gem 'simplecov'
+  gem 'simplecov-lcov'
+end
+
+

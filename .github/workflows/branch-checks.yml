@@ -11,15 +11,24 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        name: Checkout
 
       - uses: actions/setup-ruby@v1
+        name: Set up Ruby
         with:
           ruby-version: '2.6'
 
-      - name: Danger Report
+      - name: Setup Dependencies
         run: |
           gem install bundler
           bundle install --jobs 4 --retry 3
+      
+      - name: Run tests
+        run: bundle exec rake
+
+      - name: Danger Report
+        run: |
+          undercover-report -c $compare_git_ref
           bundle exec danger
         timeout-minutes: 10
         env:
