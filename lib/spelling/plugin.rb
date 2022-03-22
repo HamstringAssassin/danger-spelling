@@ -2,9 +2,9 @@ require 'English'
 require 'uri'
 
 module Danger
-  # This is a Danger plugin that wraps the python library pyspelling and some of its usage.
+  # This is a Danger plugin that wraps the python library pyspelling and some of its API.
   # The pyspelling results are posted to the pull request as a comment with the spelling mistake, file path &
-  # line number where the spelling mistake was found.
+  # line number where the mistake was found.
   #
   # It has some dependencies that should be installed prior to running.
   #
@@ -13,14 +13,14 @@ module Danger
   # * **OR**
   # * [hunspell](http://hunspell.github.io)
   #
-  # Your repository will also require a .pyspelling.yml file to be present. This .pyspelling.yml can be basic,
-  # but it will require a name and source property. Its advisable to include `expect_match: false` in your test
+  # Your repository will also require a `.pyspelling.yml` file to be present. This `.pyspelling.yml` can be basic,
+  # but it will require a `name` and `source` property. Its advisable to include `expect_match: false` in your test
   # matrix. This will stop pyspelling from generating an error at runtime.
   #
   # There are several ways to use this danger plugin
   #
-  # @example execute pyspelling matrix with the name 'test_matrix' on all files modified or
-  # added in the given pull request.
+  # @example execute pyspelling matrix with the name `test_matrix` on all files modified or added in the given pull request.
+  #
   #          spelling.name = "test_matrix"
   #          spelling.check_spelling
   #
@@ -28,8 +28,8 @@ module Danger
   # @tags spelling, danger, pyspelling, hunspell, aspell
   #
   #
-  # @example execute pyspelling matrix with the name 'test_matrix' on all files modified or added in the given pull
-  # request, excluding some specific file names
+  # @example execute pyspelling matrix with the name 'test_matrix' on all files modified or added in the given pull request, excluding some specific file names
+  #
   #          spelling.ignored_files = ["Gemfile"]
   #          spelling.name = "test_matrix"
   #          spelling.check_spelling
@@ -38,8 +38,8 @@ module Danger
   # @tags spelling, danger, pyspelling, hunspell, aspell
   #
   #
-  # @example execute pyspelling matrix with the name 'test_matrix' on all files modified or added in the given pull
-  # request, excluding some specific file names and excluding some words
+  # @example execute pyspelling matrix with the name 'test_matrix' on all files modified or added in the given pull request, excluding some specific file names and excluding some words
+  #
   #          spelling.ignored_words = ["HammyAssassin"]
   #          spelling.ignored_files = ["Gemfile"]
   #          spelling.name = "test_matrix"
@@ -61,10 +61,11 @@ module Danger
     # @return   [Array<String>]
     attr_accessor :ignored_files
 
-    # **required** The name of the test matrix in your .pyspelling.yml
+    # **required**
+    # The name of the test matrix in your `.pyspelling.yml`
     # An exception will be raised if this is not specified in your Danger file.
     #
-    # @return [<String>]
+    # @return [String]
     attr_accessor :name
 
     # Checks the spelling of all files added or modified in a given pull request. This will fail if
@@ -73,8 +74,7 @@ module Danger
     #
     # It will also fail if the required parameter `name` hasn't been specificed in the Danger file.
     #
-    #
-    # @param [<Danger::FileList>] files **Optional** files to be scanned. Default value is nil. If nil, added and
+    # @param [Danger::FileList] files **Optional** files to be scanned. Default value is nil. If nil, added and
     # modified files will be scanned.
     #
     # @return [void]
@@ -102,8 +102,8 @@ module Danger
     # Updates the message that will eventually be posted as a comment a pull request with
     # a new line for each time the spelling error has been detected.
     #
-    # @param [<Hash>] spell_issues the Hash containing the file path & the detected mistakes.
-    # @param [<String>] current_slug the repo. eg /hamstringassassin/danger-spelling.
+    # @param [Hash] spell_issues the Hash containing the file path & the detected mistakes.
+    # @param [String] current_slug the repo. eg /hamstringassassin/danger-spelling.
     #
     # @return [Array<String>] an array of messages to be displayed in the PR comment.
     #
@@ -141,14 +141,13 @@ module Danger
     #
     # **Internal Method**
     #
-    #
     # appends the default message when a spelling error is found.
     #
-    # @param [<String>] message the message to append
-    # @param [<String>] path the path of the file
-    # @param [<String>] git_loc the git location of the file
+    # @param [String] message the message to append
+    # @param [String] path the path of the file
+    # @param [String] git_loc the git location of the file
     #
-    # @return [<String>] formatted message
+    # @return [String] formatted message
     #
     def message_title(message, path, git_loc)
       message << "#### [#{path}](#{git_loc})\n\n"
@@ -163,18 +162,16 @@ module Danger
     #
     # splits a line of text up and checks if the spelling error is a match.
     #
-    # @param [<String>] text the string to be split and checked.
-    # @param [<String>] word the word to find in text.
+    # @param [String] text the string to be split and checked.
+    # @param [String] word the word to find in text.
     #
-    # @return [<Bool>] if the word is found.
+    # @return [Bool] if the word is found.
     #
     def find_word_in_text(text, word)
       val = false
       line_array = text.split
       line_array.each do |array_item|
         array_item = array_item[0...array_item.size - 1] if array_item[-1] == '.'
-        # puts "array_item #{array_item}"
-        # puts "is url #{is_url(array_item.strip)}"
         if array_item.strip == word.strip && !url?(array_item.strip)
           val = true
           val
@@ -189,9 +186,9 @@ module Danger
     #
     # checks if a given String is a URL
     #
-    # @param [<String>] txt String to check
+    # @param [String] txt String to check
     #
-    # @return [<Bool>]
+    # @return [Bool]
     #
     def url?(txt)
       txt =~ /\A#{URI::DEFAULT_PARSER.make_regexp}\z/
@@ -203,7 +200,7 @@ module Danger
     #
     # Runs pyspelling on the test matrix name provided with any files given.
     #
-    # @param [<Danger::FileList>] new_files a list of files provided to scan with pyspelling.
+    # @param [Danger::FileList] new_files a list of files provided to scan with pyspelling.
     #
     # @return [Hash] returns a hash of the file scanned and any spelling errors found.
     #
@@ -222,10 +219,10 @@ module Danger
     #
     # Check on the git service used. Will raise an error if using bitbucket as it currently doesnt support that.
     #
-    # @param [<String>] current_slug the current repo slug. eg. hamstringassassin/danger-spelling.
-    # @param [<String>] path path to file.
+    # @param [String] current_slug the current repo slug. eg. hamstringassassin/danger-spelling.
+    # @param [String] path path to file.
     #
-    # @return [<String>] full path to file including branch.
+    # @return [String] full path to file including branch.
     #
     def git_check(current_slug, path)
       if defined? @dangerfile.github
@@ -257,10 +254,10 @@ module Danger
     #
     # Checks if a given line can be ignored if it contains expected pyspelling output.
     #
-    # @param [<String>] text the text to check.
-    # @param [<String>] file_path the file path to check.
+    # @param [String] text the text to check.
+    # @param [String] file_path the file path to check.
     #
-    # @return [<Bool>] if the line can be ignored.
+    # @return [Bool] if the line can be ignored.
     #
     def ignore_line(text, file_path)
       text.strip == 'Misspelled words:' ||
@@ -277,10 +274,10 @@ module Danger
     # Removes some standard words in the pyspelling results.
     # Words provided in `ignored_words` will also be removed from the results array.
     #
-    # @param [<Array>] spelling_errors Complete list of spelling errors.
-    # @param [<String>] file_path file path.
+    # @param [Array<String>] spelling_errors Complete list of spelling errors.
+    # @param [String] file_path file path.
     #
-    # @return [<Array>] curated list of spelling errors, excluding standard and user defined words.
+    # @return [Array<String>] curated list of spelling errors, excluding standard and user defined words.
     #
     def remove_ignored_words(spelling_errors, file_path)
       spelling_errors.delete('Misspelled words:')
@@ -300,7 +297,7 @@ module Danger
     #
     # Checks of pyspelling is installed.
     #
-    # @return [<Bool>]
+    # @return [Bool]
     #
     def pyspelling_installed?
       'which pyspelling'.strip.empty? == false
@@ -312,7 +309,7 @@ module Danger
     #
     # Checks if aspell is installed.
     #
-    # @return [<Bool>]
+    # @return [Bool]
     #
     def aspell_installed?
       'which aspell'.strip.empty? == false
@@ -324,7 +321,7 @@ module Danger
     #
     # Checks if Hunspell is installed.
     #
-    # @return [<Bool>]
+    # @return [Bool]
     #
     def hunspell_installed?
       'which hunspell'.strip.empty? == false
@@ -336,7 +333,7 @@ module Danger
     #
     # checks if aspell and hunspell are installed.
     #
-    # @return [<Bool>]
+    # @return [Bool]
     #
     def aspell_hunspell_installed?
       aspell_installed? && hunspell_installed?
@@ -352,9 +349,9 @@ module Danger
     #
     # Will raise an exception if no files are found.
     #
-    # @param [<Danger::FileList>] files FileList to scan. Can be nil.
+    # @param [Danger::FileList] files FileList to scan. Can be nil.
     #
-    # @return [<Danger::FileList>] a FileList of files found.
+    # @return [Danger::FileList] a FileList of files found.
     #
     def get_files(files)
       # Use either the files provided, or the modified & added files.
