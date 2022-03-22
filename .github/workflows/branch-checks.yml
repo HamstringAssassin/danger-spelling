@@ -28,7 +28,7 @@ jobs:
 
       - name: Danger Report
         run: |
-          undercover-report -c $origin/main
+          undercover-report -c origin/main
           bundle exec danger
         timeout-minutes: 10
         env:
