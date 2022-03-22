@@ -1,12 +1,12 @@
-name: Branch Checks
+name: Push To Main
 
 on:
-  pull_request:
+  push:
     branches:
       - main
 
 jobs:
-  danger:
+  Test:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,11 +27,4 @@ jobs:
       
       - name: Run tests
         run: bundle exec rake
-
-      - name: Danger Report
-        run: |
-          undercover-report -c origin/main
-          bundle exec danger
-        timeout-minutes: 10
-        env:
-          DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
+        

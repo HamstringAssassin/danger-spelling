@@ -8,3 +8,6 @@ rubocop.lint
 
 # CHANGELOG CHECKS
 changelog.check!
+
+# Undercover Report
+undercover.report
