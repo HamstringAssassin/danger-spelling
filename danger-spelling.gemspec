@@ -5,14 +5,14 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "spelling/gem_version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "danger-spelling"
+  spec.name          = 'danger-spelling'
   spec.version       = Spelling::VERSION
-  spec.authors       = ["HammyAssassin"]
-  spec.email         = ["alanoc83@gmail.com"]
-  spec.description   = "A Danger plugin for pyspelling."
-  spec.summary       = "danger-spelling uses pyspelling to scan files changed for spelling mistakes."
-  spec.homepage      = "https://github.com/HammyAssassin/danger-spelling"
-  spec.license       = "MIT"
+  spec.authors       = ['HamstringAssassin']
+  spec.email         = ['alanoc83@gmail.com']
+  spec.description   = 'A Danger plugin for pyspelling.'
+  spec.summary       = 'danger-spelling uses pyspelling to scan files changed for spelling mistakes.'
+  spec.homepage      = 'https://github.com/hamstringassassin/danger-spelling'
+  spec.license       = 'MIT'
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
