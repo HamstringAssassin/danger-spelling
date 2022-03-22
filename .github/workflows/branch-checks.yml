@@ -16,7 +16,7 @@ jobs:
       - uses: actions/setup-ruby@v1
         name: Set up Ruby
         with:
-          ruby-version: '2.6'
+          ruby-version: '2.7'
 
       - name: Setup Dependencies
         run: |
@@ -28,7 +28,7 @@ jobs:
 
       - name: Danger Report
         run: |
-          undercover-report -c $compare_git_ref
+          undercover-report -c $origin/main
           bundle exec danger
         timeout-minutes: 10
         env:
