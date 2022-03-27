@@ -9,6 +9,7 @@ rubocop.lint(
   inline_comment: true,
 )
 
+# Required for Suggestor
 system('bundle exec rubocop --auto-correct')
 
 # CHANGELOG CHECKS
