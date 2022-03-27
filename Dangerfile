@@ -11,3 +11,6 @@ changelog.check!
 
 # Undercover Report
 undercover.report
+
+# Suggestor
+suggester.suggest

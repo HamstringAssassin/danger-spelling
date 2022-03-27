@@ -39,6 +39,9 @@ GEM
     danger-rubocop (0.10.0)
       danger
       rubocop (~> 1.0)
+    danger-suggester (0.1.0)
+      danger
+      git_diff
     danger-undercover (2.0.0)
       danger-plugin-api (~> 1.0)
     diff-lcs (1.5.0)
@@ -72,6 +75,7 @@ GEM
     formatador (1.1.0)
     git (1.10.2)
       rchardet (~> 1.8)
+    git_diff (0.4.3)
     guard (2.18.0)
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
@@ -181,6 +185,7 @@ DEPENDENCIES
   danger-changelog (~> 0.6.0)
   danger-rubocop
   danger-spelling!
+  danger-suggester
   danger-undercover
   guard (~> 2.14)
   guard-rspec (~> 4.7)
