@@ -9,7 +9,7 @@ rubocop.lint(
   inline_comment: true,
 )
 
-# system('bundle exec rubocop --auto-correct')
+system('bundle exec rubocop --auto-correct')
 
 # CHANGELOG CHECKS
 changelog.check!
