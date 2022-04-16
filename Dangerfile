@@ -4,10 +4,19 @@ gemfile_updated = !git.modified_files.grep(/Gemfile/).empty?
 warn 'The `Gemfile` was updated' if gemfile_updated
 
 # Rubocop lint
-rubocop.lint
+rubocop.lint(
+  force_exclusion: true,
+  inline_comment: true
+)
+
+# Required for Suggestor
+system('bundle exec rubocop --auto-correct')
 
 # CHANGELOG CHECKS
 changelog.check!
 
 # Undercover Report
 undercover.report
+
+# Suggestor
+suggester.suggest

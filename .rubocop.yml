@@ -1,2 +1,5 @@
 Style/FrozenStringLiteralComment:
   Enabled: false
+
+AllCops: 
+  NewCops: enable
