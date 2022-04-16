@@ -6,7 +6,7 @@ warn 'The `Gemfile` was updated' if gemfile_updated
 # Rubocop lint
 rubocop.lint(
   force_exclusion: true,
-  inline_comment: true,
+  inline_comment: true
 )
 
 # Required for Suggestor
