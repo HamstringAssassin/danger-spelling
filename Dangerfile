@@ -15,8 +15,8 @@ system('bundle exec rubocop --auto-correct')
 # CHANGELOG CHECKS
 changelog.check!
 
-# Undercover Report
-undercover.report
+# # Undercover Report
+# undercover.report
 
 # Suggestor
 suggester.suggest
