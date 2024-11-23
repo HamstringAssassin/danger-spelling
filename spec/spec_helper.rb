@@ -6,8 +6,8 @@ require 'simplecov-lcov'
 SimpleCov::Formatter::LcovFormatter.config.report_with_single_file = true
 SimpleCov.formatter = SimpleCov::Formatter::LcovFormatter
 SimpleCov.start do
-  add_filter(/^\/spec\//) # For RSpec
-  add_filter(/^\/test\//) # For Minitest
+  add_filter(%r{^/spec/}) # For RSpec
+  add_filter(%r{^/test/}) # For Minitest
   enable_coverage(:branch) # Report branch coverage to trigger branch-level undercover warnings
 end
 
