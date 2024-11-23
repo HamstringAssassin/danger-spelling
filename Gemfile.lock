@@ -72,6 +72,7 @@ GEM
     faraday-rack (1.0.0)
     faraday-retry (1.0.3)
     ffi (1.17.0-arm64-darwin)
+    ffi (1.17.0-x86_64-linux-gnu)
     formatador (1.1.0)
     git (1.10.2)
       rchardet (~> 1.8)
@@ -173,14 +174,13 @@ GEM
       rainbow (>= 2.1, < 4.0)
       rugged (>= 0.27, < 1.7)
     unicode-display_width (2.1.0)
-    webrick (1.7.0)
-    yard (0.9.27)
-      webrick (~> 1.7.0)
+    yard (0.9.36)
 
 PLATFORMS
   arm64-darwin-20
   arm64-darwin-22
   arm64-darwin-24
+  x86_64-linux
 
 DEPENDENCIES
   bundler
