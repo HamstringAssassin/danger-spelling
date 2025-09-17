@@ -128,7 +128,7 @@ GEM
       ffi (~> 1.0)
     rchardet (1.8.0)
     regexp_parser (2.2.1)
-    rexml (3.3.9)
+    rexml (3.4.2)
     rspec (3.11.0)
       rspec-core (~> 3.11.0)
       rspec-expectations (~> 3.11.0)
@@ -175,7 +175,6 @@ GEM
       rainbow (>= 2.1, < 4.0)
       rugged (>= 0.27, < 1.7)
     unicode-display_width (2.1.0)
-    webrick (1.8.2)
     yard (0.9.37)
 
 PLATFORMS
